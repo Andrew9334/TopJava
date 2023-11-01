@@ -73,6 +73,19 @@
             <artifactId>aether-spi</artifactId>
             <version>1.7</version>
         </dependency>
+
+        <dependency>
+            <groupId>net.sargue</groupId>
+            <artifactId>java-time-jsptags</artifactId>
+            <version>1.1.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+
     </dependencies>
 
     <profiles>
