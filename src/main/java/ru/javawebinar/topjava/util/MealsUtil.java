@@ -11,6 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 public class MealsUtil {
     public static List<Meal> meals = new CopyOnWriteArrayList<>();
+    public static final int CALORIES_PER_DAY = 2000;
     public static void main(String[] args) {
 //                meals.add(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500));
 //                meals.add(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000));

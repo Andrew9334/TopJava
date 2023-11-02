@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://sargue.net/jsptags/time" prefix="javatime" %>
@@ -25,17 +24,17 @@
             <td><javatime:format value="${meal.dateTime}" pattern="dd.MM.yyyy HH:mm"/></td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
-            <td><a href="meals?action=edit&id=${meal.id}"></a>update</td>
-            <td><a href="meals?action=delete&id=${meal.id}"></a>delete</td>
+            <td><a href="meals?action=save&id=${meal.id}">update</a></td>
+            <td><a href="meals?action=delete&id=${meal.id}">delete</a></td>
         </tr>
     </c:forEach>
 </table>
 
-<form method="post" action="meals" name="AddMeal">
-    DateTime : <input type="datetime-local" name="DataTime"/>
-    Description : <input type="text" name="Description"/>
-    Calories " <input type="number" name="Calories"/>
-    <button type="submit">Add</button>
-</form>
+<%--<form method="post" action="meals" name="AddMeal"><br/>--%>
+<%--    <label> DateTime : <input type="datetime-local" name="dateTime"/> </label> <br/>--%>
+<%--    <label> Description : <input type="text" name="Description"/></label> <br/>--%>
+<%--    <label> Calories " <input type="number" name="calories"/> </label> <br/>--%>
+<%--    <button type="submit">Add</button>--%>
+<%--</form>--%>
 </body>
 </html>

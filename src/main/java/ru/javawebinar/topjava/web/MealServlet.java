@@ -33,7 +33,7 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.debug("redirect to meals");
-
+        req.setCharacterEncoding("UTF-8");
         String action = req.getParameter("action");
         String path;
         action = action == null ? linkGetAll : linkAddEdit;
@@ -41,7 +41,7 @@ public class MealServlet extends HttpServlet {
         Meal meal;
 
         switch (action.toLowerCase()) {
-            case ("add"):
+            case ("save"):
                 meal = new Meal(null, null, 0);
                 req.setAttribute("meal", meal);
                 path = linkAddEdit;
@@ -71,17 +71,17 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         log.debug("add or update Meal");
+        req.setCharacterEncoding("UTF-8");
         int id = 0;
-        try {
-            id = Integer.parseInt(req.getParameter("id"));
-        } catch (NumberFormatException e) {
-            System.out.println(e);
-        }
         String description = req.getParameter("Description");
         int calories = Integer.parseInt(req.getParameter("calories"));
         LocalDateTime localDateTime = TimeUtil.parseLocalDateTime(req.getParameter("dateTime"));
-        Meal meal = new Meal(id, localDateTime, description, calories);
-        mealDAOLogic.save(meal);
+        try {
+            id = Integer.parseInt(req.getParameter("id"));
+        } catch (NumberFormatException e) {
+            Meal meal = new Meal(id, localDateTime, description, calories);
+            mealDAOLogic.save(meal);
+        }
         resp.sendRedirect("meals");
     }
 }
