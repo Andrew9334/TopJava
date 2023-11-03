@@ -30,6 +30,8 @@
     </c:forEach>
 </table>
 
+<p><a href="meals?action=save">Add Meal</a></p>
+
 <%--<form method="post" action="meals" name="AddMeal"><br/>--%>
 <%--    <label> DateTime : <input type="datetime-local" name="dateTime"/> </label> <br/>--%>
 <%--    <label> Description : <input type="text" name="Description"/></label> <br/>--%>

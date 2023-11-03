@@ -10,7 +10,7 @@
 <hr>
 <h2>Meal</h2>
 <jsp:useBean id="meal" scope="request" type="ru.javawebinar.topjava.model.Meal"/>
-<form method="post" action="meals" name="AddMeal"><br/>
+<form method="post" action="meals"><br/>
     <label> DateTime : <input type="datetime-local" name="dateTime"/> </label> <br/>
     <label> Description : <input type="text" name="Description"/></label> <br/>
     <label> Calories " <input type="number" name="calories"/> </label> <br/>

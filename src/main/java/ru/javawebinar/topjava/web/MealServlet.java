@@ -41,31 +41,36 @@ public class MealServlet extends HttpServlet {
         Meal meal;
 
         switch (action.toLowerCase()) {
-            case ("save"):
+            case "save" -> {
                 meal = new Meal(null, null, 0);
                 req.setAttribute("meal", meal);
                 path = linkAddEdit;
-                break;
-            case ("update"):
+                req.getRequestDispatcher(path).forward(req, resp);
+            }
+            case "update" -> {
                 id = Integer.parseInt(req.getParameter("id"));
                 meal = mealDAOLogic.getMealById(id);
                 req.setAttribute("meal", meal);
                 path = linkAddEdit;
-                break;
-            case ("delete"):
+                req.getRequestDispatcher(path).forward(req, resp);
+            }
+            case "delete" -> {
                 id = Integer.parseInt(req.getParameter("id"));
                 mealDAOLogic.delete(id);
                 resp.sendRedirect("meals");
-            default:
+                path = linkGetAll;
+                req.getRequestDispatcher(path).forward(req, resp);
+            }
+            default -> {
                 List<MealTo> list = MealsUtil.filteredByStreams(mealDAOLogic.getAll(),
                         LocalTime.MIN,
                         LocalTime.MAX,
                         2000);
                 req.setAttribute("meals", list);
                 path = linkGetAll;
-
+                req.getRequestDispatcher(path).forward(req, resp);
+            }
         }
-        req.getRequestDispatcher(path).forward(req, resp);
     }
 
     @Override
