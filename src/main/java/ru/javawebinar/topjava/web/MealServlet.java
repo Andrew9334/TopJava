@@ -38,7 +38,7 @@ public class MealServlet extends HttpServlet {
         String path;
         int id;
         Meal meal;
-        action = action == null ? "list" : action;
+        action = action == null ? "" : action;
 
         switch (action) {
             case "save":
