@@ -36,11 +36,10 @@ public class MealServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         String action = req.getParameter("action");
         String path;
-        action = action == null ? linkGetAll : linkAddEdit;
         int id;
         Meal meal;
 
-        switch (action.toLowerCase()) {
+        switch (action == null ? linkGetAll : linkAddEdit) {
             case "save" -> {
                 meal = new Meal(null, null, 0);
                 req.setAttribute("meal", meal);
