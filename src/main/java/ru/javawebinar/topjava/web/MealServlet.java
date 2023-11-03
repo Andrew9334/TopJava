@@ -38,29 +38,28 @@ public class MealServlet extends HttpServlet {
         String path;
         int id;
         Meal meal;
+        action = action == null ? linkGetAll : linkAddEdit;
 
-        switch (action == null ? linkGetAll : linkAddEdit) {
-            case "save" -> {
+        switch (action) {
+            case "save":
                 meal = new Meal(null, null, 0);
                 req.setAttribute("meal", meal);
                 path = linkAddEdit;
                 req.getRequestDispatcher(path).forward(req, resp);
-            }
-            case "update" -> {
+            case "update":
                 id = Integer.parseInt(req.getParameter("id"));
                 meal = mealDAOLogic.getMealById(id);
                 req.setAttribute("meal", meal);
                 path = linkAddEdit;
                 req.getRequestDispatcher(path).forward(req, resp);
-            }
-            case "delete" -> {
+                break;
+            case "delete":
                 id = Integer.parseInt(req.getParameter("id"));
                 mealDAOLogic.delete(id);
                 resp.sendRedirect("meals");
                 path = linkGetAll;
                 req.getRequestDispatcher(path).forward(req, resp);
-            }
-            default -> {
+            default:
                 List<MealTo> list = MealsUtil.filteredByStreams(mealDAOLogic.getAll(),
                         LocalTime.MIN,
                         LocalTime.MAX,
@@ -68,7 +67,6 @@ public class MealServlet extends HttpServlet {
                 req.setAttribute("meals", list);
                 path = linkGetAll;
                 req.getRequestDispatcher(path).forward(req, resp);
-            }
         }
     }
 
