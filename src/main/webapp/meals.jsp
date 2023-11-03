@@ -32,11 +32,5 @@
 
 <p><a href="meals?action=save">Add Meal</a></p>
 
-<%--<form method="post" action="meals" name="AddMeal"><br/>--%>
-<%--    <label> DateTime : <input type="datetime-local" name="dateTime"/> </label> <br/>--%>
-<%--    <label> Description : <input type="text" name="Description"/></label> <br/>--%>
-<%--    <label> Calories " <input type="number" name="calories"/> </label> <br/>--%>
-<%--    <button type="submit">Add</button>--%>
-<%--</form>--%>
 </body>
 </html>
