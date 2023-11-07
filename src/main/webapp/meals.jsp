@@ -21,7 +21,7 @@
     <c:forEach var="meal" items="${meals}">
         <c:set var="lineColor" value="${meal.excess ? 'red' : 'green'}"/>
         <tr style="color:${lineColor}">
-            <td><javatime:format value="${meal.dateTime}" pattern="dd.MM.yyyy HH:mm"/></td>
+            <td><javatime:format value="${meal.dateTime}" pattern="dd-MM-yyyy HH:mm"/></td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
             <td><a href="meals?action=update&id=${meal.id}">update</a></td>
@@ -30,7 +30,7 @@
     </c:forEach>
 </table>
 
-<p><a href="meals?action=save">Add Meal</a></p>
+<p><a href="meals?action=create">Add Meal</a></p>
 
 </body>
 </html>

@@ -1,7 +1,8 @@
 package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
-import ru.javawebinar.topjava.Meal.MealDAOLogic;
+import ru.javawebinar.topjava.Meal.MealDao;
+import ru.javawebinar.topjava.Meal.MealDaoSaveToMemory;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealTo;
 import ru.javawebinar.topjava.util.MealsUtil;
@@ -20,14 +21,14 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class MealServlet extends HttpServlet {
     private static final Logger log = getLogger(MealServlet.class);
-    private MealDAOLogic mealDAOLogic;
-    private static final String linkAddEdit = "/meal.jsp";
-    private static final String linkGetAll = "/meals.jsp";
+    private static final String LINK_ADD_EDIT = "/meal.jsp";
+    private static final String LINK_GET_ALL = "/meals.jsp";
+    private static final int CALORIES_PER_DAY = 2000;
+    private MealDao mealDaoSaveToMemory;
 
     @Override
     public void init() throws ServletException {
-        super.init();
-        mealDAOLogic = new MealDAOLogic();
+        mealDaoSaveToMemory = new MealDaoSaveToMemory();
     }
 
     @Override
@@ -41,30 +42,32 @@ public class MealServlet extends HttpServlet {
         action = action == null ? "" : action;
 
         switch (action) {
-            case "save":
-                meal = new Meal(null, null, 0);
+            case "create":
+                log.debug("Create meal");
+                meal = new Meal(null, null, CALORIES_PER_DAY);
                 req.setAttribute("meal", meal);
-                path = linkAddEdit;
+                path = LINK_ADD_EDIT;
                 break;
             case "update":
+                log.debug("Update meal");
                 id = Integer.parseInt(req.getParameter("id"));
-                meal = mealDAOLogic.getMealById(id);
+                meal = mealDaoSaveToMemory.getById(id);
                 req.setAttribute("meal", meal);
-                path = linkAddEdit;
+                path = LINK_ADD_EDIT;
                 break;
             case "delete":
+                log.debug("delete meal");
                 id = Integer.parseInt(req.getParameter("id"));
-                mealDAOLogic.delete(id);
+                mealDaoSaveToMemory.delete(id);
                 resp.sendRedirect("meals");
-                path = linkGetAll;
-                break;
+                return;
             default:
-                List<MealTo> list = MealsUtil.filteredByStreams(mealDAOLogic.getAll(),
+                List<MealTo> list = MealsUtil.filteredByStreams(mealDaoSaveToMemory.getAll(),
                         LocalTime.MIN,
                         LocalTime.MAX,
-                        2000);
+                        CALORIES_PER_DAY);
                 req.setAttribute("meals", list);
-                path = linkGetAll;
+                path = LINK_GET_ALL;
         }
         req.getRequestDispatcher(path).forward(req, resp);
     }
@@ -72,16 +75,17 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         log.debug("add or update Meal");
+        MealDao mealDaoSaveToMemory = new MealDaoSaveToMemory();
         req.setCharacterEncoding("UTF-8");
         int id = 0;
-        String description = req.getParameter("Description");
+        String description = req.getParameter("description");
         int calories = Integer.parseInt(req.getParameter("calories"));
-        LocalDateTime localDateTime = TimeUtil.parseLocalDateTime(req.getParameter("dateTime"));
-        try {
-            id = Integer.parseInt(req.getParameter("id"));
-        } catch (NumberFormatException e) {
-            Meal meal = new Meal(id, localDateTime, description, calories);
-            mealDAOLogic.save(meal);
+        LocalDateTime localDateTime = LocalDateTime.parse(req.getParameter("dateTime"), TimeUtil.formatter);
+        Meal meal = new Meal(id, localDateTime, description, calories);
+        if (Integer.parseInt(req.getParameter("id")) == id) {
+            mealDaoSaveToMemory.update(meal);
+        } else {
+            mealDaoSaveToMemory.create(meal);
         }
         resp.sendRedirect("meals");
     }
