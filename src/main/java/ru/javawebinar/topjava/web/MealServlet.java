@@ -1,8 +1,8 @@
 package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
-import ru.javawebinar.topjava.Meal.MealDao;
-import ru.javawebinar.topjava.Meal.MealDaoSaveToMemory;
+import ru.javawebinar.topjava.MealDao.MealDao;
+import ru.javawebinar.topjava.MealDao.MealDaoSaveToMemory;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealTo;
 import ru.javawebinar.topjava.util.MealsUtil;
@@ -75,17 +75,17 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         log.debug("add or update Meal");
-        MealDao mealDaoSaveToMemory = new MealDaoSaveToMemory();
+        mealDaoSaveToMemory = new MealDaoSaveToMemory();
         req.setCharacterEncoding("UTF-8");
-        int id = 0;
+        Integer id = null;
         String description = req.getParameter("description");
         int calories = Integer.parseInt(req.getParameter("calories"));
         LocalDateTime localDateTime = LocalDateTime.parse(req.getParameter("dateTime"), TimeUtil.formatter);
         Meal meal = new Meal(id, localDateTime, description, calories);
-        if (Integer.parseInt(req.getParameter("id")) == id) {
-            mealDaoSaveToMemory.update(meal);
-        } else {
+        if (req.getParameter("id") == null) {
             mealDaoSaveToMemory.create(meal);
+        } else {
+            mealDaoSaveToMemory.update(meal);
         }
         resp.sendRedirect("meals");
     }
