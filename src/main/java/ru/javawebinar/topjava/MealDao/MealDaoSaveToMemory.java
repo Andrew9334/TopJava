@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class MealDaoSaveToMemory implements MealDao {
     private final Map<Integer, Meal> mealMap = new ConcurrentHashMap<>();
     private final AtomicInteger id = new AtomicInteger(0);
+
     public MealDaoSaveToMemory() {
         create(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500));
         create(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000));
@@ -37,9 +38,8 @@ public class MealDaoSaveToMemory implements MealDao {
     public Meal create(Meal meal) {
         if (meal.isNew()) {
             meal.setId(id.incrementAndGet());
-            return mealMap.put(meal.getId(), meal);
         }
-        return meal;
+        return mealMap.put(meal.getId(), meal);
     }
 
     @Override
