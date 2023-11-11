@@ -33,8 +33,7 @@ public class MealServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, ServletException {
-        log.debug("redirect to meals");
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         req.setCharacterEncoding("UTF-8");
         String action = req.getParameter("action");
         String path;
@@ -44,9 +43,15 @@ public class MealServlet extends HttpServlet {
 
         switch (action) {
             case "create":
-            case "update":
                 log.debug("Create meal");
                 meal = new Meal(null, null, 0);
+                req.setAttribute("meal", meal);
+                path = LINK_ADD_EDIT;
+                break;
+            case "update":
+                log.debug("Update meal");
+                id = getId(req);
+                meal = mealDao.getById(id);
                 req.setAttribute("meal", meal);
                 path = LINK_ADD_EDIT;
                 break;
@@ -57,6 +62,7 @@ public class MealServlet extends HttpServlet {
                 resp.sendRedirect("meals");
                 return;
             default:
+                log.debug("redirect to meals");
                 List<MealTo> list = MealsUtil.filteredByStreams(mealDao.getAll(),
                         LocalTime.MIN,
                         LocalTime.MAX,
@@ -74,13 +80,15 @@ public class MealServlet extends HttpServlet {
         String description = req.getParameter("description");
         int calories = Integer.parseInt(req.getParameter("calories"));
         LocalDateTime localDateTime = LocalDateTime.parse(req.getParameter("dateTime"), TimeUtil.formatter);
-        if(id == null) {
+
+        if (id == null) {
             Meal meal = new Meal(null, localDateTime, description, calories);
             mealDao.create(meal);
         } else {
             Meal meal = new Meal(getId(req), localDateTime, description, calories);
             mealDao.update(getId(req), meal);
         }
+        resp.sendRedirect("meals");
     }
 
     private int getId(HttpServletRequest request) {
