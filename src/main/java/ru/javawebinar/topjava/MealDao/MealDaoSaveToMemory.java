@@ -39,7 +39,7 @@ public class MealDaoSaveToMemory implements MealDao {
             meal.setId(id.incrementAndGet());
             return mealMap.put(meal.getId(), meal);
         }
-        return null;
+        return meal;
     }
 
     @Override
