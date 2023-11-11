@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -24,15 +25,15 @@ public class MealServlet extends HttpServlet {
     private static final String LINK_ADD_EDIT = "/meal.jsp";
     private static final String LINK_GET_ALL = "/meals.jsp";
     private static final int CALORIES_PER_DAY = 2000;
-    private MealDao mealDaoSaveToMemory;
+    private MealDao mealDao;
 
     @Override
-    public void init() throws ServletException {
-        mealDaoSaveToMemory = new MealDaoSaveToMemory();
+    public void init() {
+        mealDao = new MealDaoSaveToMemory();
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, ServletException {
         log.debug("redirect to meals");
         req.setCharacterEncoding("UTF-8");
         String action = req.getParameter("action");
@@ -43,26 +44,20 @@ public class MealServlet extends HttpServlet {
 
         switch (action) {
             case "create":
-                log.debug("Create meal");
-                meal = new Meal(null, null, CALORIES_PER_DAY);
-                req.setAttribute("meal", meal);
-                path = LINK_ADD_EDIT;
-                break;
             case "update":
-                log.debug("Update meal");
-                id = Integer.parseInt(req.getParameter("id"));
-                meal = mealDaoSaveToMemory.getById(id);
+                log.debug("Create meal");
+                meal = new Meal(null, null, 0);
                 req.setAttribute("meal", meal);
                 path = LINK_ADD_EDIT;
                 break;
             case "delete":
                 log.debug("delete meal");
-                id = Integer.parseInt(req.getParameter("id"));
-                mealDaoSaveToMemory.delete(id);
+                id = getId(req);
+                mealDao.delete(id);
                 resp.sendRedirect("meals");
                 return;
             default:
-                List<MealTo> list = MealsUtil.filteredByStreams(mealDaoSaveToMemory.getAll(),
+                List<MealTo> list = MealsUtil.filteredByStreams(mealDao.getAll(),
                         LocalTime.MIN,
                         LocalTime.MAX,
                         CALORIES_PER_DAY);
@@ -74,19 +69,22 @@ public class MealServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        log.debug("add or update Meal");
-        mealDaoSaveToMemory = new MealDaoSaveToMemory();
         req.setCharacterEncoding("UTF-8");
-        Integer id = null;
+        String id = req.getParameter("id");
         String description = req.getParameter("description");
         int calories = Integer.parseInt(req.getParameter("calories"));
         LocalDateTime localDateTime = LocalDateTime.parse(req.getParameter("dateTime"), TimeUtil.formatter);
-        Meal meal = new Meal(id, localDateTime, description, calories);
-        if (req.getParameter("id") == null) {
-            mealDaoSaveToMemory.create(meal);
+        if(id == null) {
+            Meal meal = new Meal(null, localDateTime, description, calories);
+            mealDao.create(meal);
         } else {
-            mealDaoSaveToMemory.update(meal);
+            Meal meal = new Meal(getId(req), localDateTime, description, calories);
+            mealDao.update(getId(req), meal);
         }
-        resp.sendRedirect("meals");
+    }
+
+    private int getId(HttpServletRequest request) {
+        String nonNullId = Objects.requireNonNull(request.getParameter("id"));
+        return Integer.parseInt(nonNullId);
     }
 }

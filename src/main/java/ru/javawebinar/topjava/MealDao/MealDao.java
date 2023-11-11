@@ -11,8 +11,8 @@ public interface MealDao {
 
     Meal create(Meal meal);
 
-    void update(Meal meal);
+    void update(int id, Meal meal);
 
-    void delete(int id);
+    void delete(Integer id);
 }
 
