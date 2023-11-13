@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.MealDao;
+package ru.javawebinar.topjava.mealdao;
 
 import ru.javawebinar.topjava.model.Meal;
 
@@ -11,8 +11,8 @@ public interface MealDao {
 
     Meal create(Meal meal);
 
-    void update(int id, Meal meal);
+    void update(Meal meal);
 
-    void delete(Integer id);
+    void delete(int id);
 }
 

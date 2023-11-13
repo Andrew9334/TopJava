@@ -1,8 +1,8 @@
 package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
-import ru.javawebinar.topjava.MealDao.MealDao;
-import ru.javawebinar.topjava.MealDao.MealDaoSaveToMemory;
+import ru.javawebinar.topjava.mealdao.MealDao;
+import ru.javawebinar.topjava.mealdao.MealDaoSaveToMemory;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealTo;
 import ru.javawebinar.topjava.util.MealsUtil;
@@ -81,12 +81,12 @@ public class MealServlet extends HttpServlet {
         int calories = Integer.parseInt(req.getParameter("calories"));
         LocalDateTime localDateTime = LocalDateTime.parse(req.getParameter("dateTime"), TimeUtil.formatter);
 
-        if (id == null) {
+        if (id.isEmpty()) {
             Meal meal = new Meal(null, localDateTime, description, calories);
             mealDao.create(meal);
         } else {
             Meal meal = new Meal(getId(req), localDateTime, description, calories);
-            mealDao.update(getId(req), meal);
+            mealDao.update(meal);
         }
         resp.sendRedirect("meals");
     }

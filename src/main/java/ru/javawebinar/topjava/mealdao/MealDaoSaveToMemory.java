@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.MealDao;
+package ru.javawebinar.topjava.mealdao;
 
 import ru.javawebinar.topjava.model.Meal;
 
@@ -38,19 +38,18 @@ public class MealDaoSaveToMemory implements MealDao {
     public Meal create(Meal meal) {
         if (meal.isNew()) {
             meal.setId(id.incrementAndGet());
+            return mealMap.put(meal.getId(), meal);
         }
-        return mealMap.put(meal.getId(), meal);
+        return meal;
     }
 
     @Override
-    public void update(int id, Meal meal) {
+    public void update(Meal meal) {
         mealMap.replace(meal.getId(), meal);
     }
 
     @Override
-    public void delete(Integer id) {
-        if (id != null) {
-            mealMap.remove(id);
-        }
+    public void delete(int id) {
+        mealMap.remove(id);
     }
 }

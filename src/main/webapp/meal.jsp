@@ -11,6 +11,7 @@
 <h2>Meal</h2>
 <jsp:useBean id="meal" scope="request" type="ru.javawebinar.topjava.model.Meal"/>
 <form method="post" action="meals"><br/>
+    <input type="hidden" name="id" value="${meal.id}">
     <label> DateTime : <input type="datetime-local" name="dateTime" value="${meal.dateTime}" required/> </label> <br/>
     <label> Description : <input type="text" name="description" value="${meal.description}" required/></label> <br/>
     <label> Calories <input type="number" name="calories" value="${meal.calories}" required/> </label> <br/>
