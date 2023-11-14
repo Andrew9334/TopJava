@@ -36,10 +36,8 @@ public class MealDaoSaveToMemory implements MealDao {
 
     @Override
     public Meal create(Meal meal) {
-        if (meal.isNew()) {
-            meal.setId(id.incrementAndGet());
-            return mealMap.put(meal.getId(), meal);
-        }
+        meal.setId(id.incrementAndGet());
+        mealMap.put(meal.getId(), meal);
         return meal;
     }
 
