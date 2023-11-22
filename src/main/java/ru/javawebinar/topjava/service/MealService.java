@@ -29,10 +29,12 @@ public class MealService {
         checkNotFoundWithId(repository.delete(id, userId), id);
     }
 
+    @Autowired
     public Meal get(int id, int userId) {
         return checkNotFoundWithId(repository.get(id, userId), id);
     }
 
+    @Autowired
     public List<Meal> getAll(int userId) {
 //        return repository.getAll(userId);
         return repository.getAll(userId)
@@ -41,6 +43,7 @@ public class MealService {
                 .collect(Collectors.toList());
     }
 
+    @Autowired
     public void update(Meal meal) {
         checkNotFoundWithId(repository.save(meal), meal.getUserId());
     }
