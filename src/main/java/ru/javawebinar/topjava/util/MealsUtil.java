@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -27,11 +28,15 @@ public class MealsUtil {
             new Meal(SecurityUtil.authUserId(), LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410)
     );
 
-        List<MealTo> mealsTo = filteredByStreams(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
-        mealsTo.forEach(System.out::println);
+    public static List<MealTo> getTos(Collection<Meal> meals, int caloriesPerDay) {
+        return filterByPredicate(meals, caloriesPerDay, meal -> true);
     }
 
-    public static List<MealTo> filteredByStreams(List<Meal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+    public static List<MealTo> getFilteredTos(Collection<Meal> meals, int caloriesPerDay, LocalTime startTime, LocalTime endTime) {
+        return filterByPredicate(meals, caloriesPerDay, meal -> DateTimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime));
+    }
+
+    private static List<MealTo> filterByPredicate(Collection<Meal> meals, int caloriesPerDay, Predicate<Meal> filter) {
         Map<LocalDate, Integer> caloriesSumByDate = meals.stream()
                 .collect(
                         Collectors.groupingBy(Meal::getDate, Collectors.summingInt(Meal::getCalories))
@@ -45,6 +50,6 @@ public class MealsUtil {
     }
 
     private static MealTo createTo(Meal meal, boolean excess) {
-        return new MealTo(meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
+        return new MealTo(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
     }
 }
