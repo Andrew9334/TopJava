@@ -44,7 +44,6 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public List<User> getAll() {
         log.info("getAll");
-//        return Collections.emptyList();
         return userRepository
                 .values()
                 .stream()
