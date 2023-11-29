@@ -5,6 +5,7 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.web.SecurityUtil;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
@@ -13,14 +14,14 @@ import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 public class MealService {
 
     private final MealRepository repository;
-    private final int securityUtil = SecurityUtil.authUserId();
+//    private final int securityUtil = SecurityUtil.authUserId();
 
     public MealService(MealRepository repository) {
         this.repository = repository;
     }
 
-    public Meal create(Meal meal) {
-        return repository.save(meal, securityUtil);
+    public Meal create(Meal meal, int userId) {
+        return repository.save(meal, userId);
     }
 
     public void delete(int id, int userId) {
@@ -36,7 +37,11 @@ public class MealService {
         return repository.getAll(userId);
     }
 
-    public void update(Meal meal) {
-        checkNotFoundWithId(repository.save(meal, securityUtil), meal.getUserId());
+    public void update(Meal meal, int userId) {
+        checkNotFoundWithId(repository.save(meal, userId), meal.getId());
+    }
+
+    public List<Meal> filterByDateAndTime(LocalDate startDate, LocalDate endDate, int userId) {
+        return repository.filteredByDateAndByTime(startDate, endDate, SecurityUtil.authUserId());
     }
 }

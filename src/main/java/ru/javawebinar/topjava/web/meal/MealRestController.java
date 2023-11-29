@@ -10,6 +10,8 @@ import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.web.SecurityUtil;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
@@ -24,27 +26,41 @@ public class MealRestController {
         this.service = service;
     }
 
-    public List<MealTo> getAll(int userId) {
-        userId = SecurityUtil.authUserId();
+    public List<MealTo> getAll() {
+        int userId = SecurityUtil.authUserId();
         log.info("getAll");
         return MealsUtil.getTos(service.getAll(userId), SecurityUtil.authUserCaloriesPerDay());
     }
 
-    public Meal get(int id, int userId) {
-        userId = SecurityUtil.authUserId();
+    public Meal get(int id) {
+        int userId = SecurityUtil.authUserId();
         log.info("get {}", id);
         return service.get(id, userId);
     }
 
     public Meal create(Meal meal) {
+        int userId = SecurityUtil.authUserId();
         log.info("create {}", meal);
         checkNew(meal);
-        return service.create(meal);
+        return service.create(meal, userId);
     }
 
     public void update(Meal meal, int id) {
+        int userId = SecurityUtil.authUserId();
         log.info("update {} with id={}", meal, id);
         assureIdConsistent(meal, id);
-        service.update(meal);
+        service.update(meal, userId);
+    }
+
+    public List<MealTo> getByDateAndTime(LocalDate startDate, LocalTime startTime,
+                                         LocalDate endDate, LocalTime endTime) {
+        LocalDate sD = startDate == null ? LocalDate.MIN : startDate;
+        LocalDate eD = endDate == null ? LocalDate.MAX : endDate;
+        LocalTime sT = startTime == null ? LocalTime.MIN : startTime;
+        LocalTime eT = endTime == null ? LocalTime.MAX : endTime;
+
+        return MealsUtil.getFilteredTos(service.filterByDateAndTime(sD, eD, SecurityUtil.authUserId()),
+                SecurityUtil.authUserCaloriesPerDay(), sT, eT);
+
     }
 }
