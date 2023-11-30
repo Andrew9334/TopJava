@@ -18,5 +18,5 @@ public interface MealRepository {
     // null if not found, when updated
     List<Meal> getAll(int userId);
 
-    List<Meal> filteredByDateAndByTime(LocalDate startDate, LocalDate endDate, int userId);
+    List<Meal> filterByDate(LocalDate startDate, LocalDate endDate, int userId);
 }

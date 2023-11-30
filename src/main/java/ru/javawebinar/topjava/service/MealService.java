@@ -3,7 +3,6 @@ package ru.javawebinar.topjava.service;
 import org.springframework.stereotype.Service;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
-import ru.javawebinar.topjava.web.SecurityUtil;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,7 +13,6 @@ import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 public class MealService {
 
     private final MealRepository repository;
-//    private final int securityUtil = SecurityUtil.authUserId();
 
     public MealService(MealRepository repository) {
         this.repository = repository;
@@ -41,7 +39,7 @@ public class MealService {
         checkNotFoundWithId(repository.save(meal, userId), meal.getId());
     }
 
-    public List<Meal> filterByDateAndTime(LocalDate startDate, LocalDate endDate, int userId) {
-        return repository.filteredByDateAndByTime(startDate, endDate, SecurityUtil.authUserId());
+    public List<Meal> filterByDate(LocalDate startDate, LocalDate endDate, int userId) {
+        return repository.filterByDate(startDate, endDate, userId);
     }
 }
