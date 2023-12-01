@@ -54,12 +54,18 @@ public class MealRestController {
         service.update(meal, userId);
     }
 
-    public List<MealTo> getByDateAndTime(String startDate, String startTime,
-                                         String endDate, String endTime) {
-        LocalDate sD = startDate == null || startDate.isEmpty() ? LocalDate.MIN : LocalDate.parse(startDate);
-        LocalDate eD = endDate == null || endDate.isEmpty() ? LocalDate.MAX : LocalDate.parse(endDate);
-        LocalTime sT = startTime == null || startTime.isEmpty() ? LocalTime.MIN : LocalTime.parse(startTime);
-        LocalTime eT = endTime == null || endTime.isEmpty() ? LocalTime.MAX : LocalTime.parse(endTime);
+    public void delete(int id, int userId) {
+        userId = SecurityUtil.authUserId();
+        log.info("delete meal with id {}", id);
+        service.delete(id, userId);
+    }
+
+    public List<MealTo> getByDateAndTime(LocalDate startDate, LocalTime startTime,
+                                         LocalDate endDate, LocalTime endTime) {
+        LocalDate sD = startDate == null ? LocalDate.MIN : startDate;
+        LocalDate eD = endDate == null ? LocalDate.MAX : endDate;
+        LocalTime sT = startTime == null ? LocalTime.MIN : startTime;
+        LocalTime eT = endTime == null ? LocalTime.MAX : endTime;
 
         int userId = SecurityUtil.authUserId();
 

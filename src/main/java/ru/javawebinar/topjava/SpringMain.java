@@ -22,8 +22,8 @@ public class SpringMain {
             adminUserController.create(new User(null, "userName", "email@mail.ru", "password", Role.ADMIN));
             MealRestController mealRestController = appCtx.getBean(MealRestController.class);
             mealRestController.create(new Meal(LocalDateTime.now(), "New meal", 1000));
-            System.out.println(mealRestController.getByDateAndTime(String.valueOf(LocalDate.of(2020, Month.JANUARY, 31)), null,
-                    String.valueOf(LocalDate.of(2020, Month.JANUARY, 31)), null));
+            System.out.println(mealRestController.getByDateAndTime(LocalDate.of(2020, Month.JANUARY, 31), null,
+                    LocalDate.of(2020, Month.JANUARY, 31), null));
 
         }
     }
