@@ -44,10 +44,8 @@ public class MealServlet extends HttpServlet {
 
         log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
         if (request.getParameter("id").isEmpty()) {
-            log.info("create meal{}", id);
             mealRestController.create(meal);
         } else {
-            log.info("update meal{}", id);
             mealRestController.update(meal, getId(request));
         }
         response.sendRedirect("meals");
