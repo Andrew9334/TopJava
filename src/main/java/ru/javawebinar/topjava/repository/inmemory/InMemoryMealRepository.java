@@ -9,6 +9,7 @@ import ru.javawebinar.topjava.util.MealsUtil;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -64,12 +65,13 @@ public class InMemoryMealRepository implements MealRepository {
 
     private List<Meal> filter(int userId, Predicate<Meal> predicate) {
         Map<Integer, Meal> meals = repository.get(userId);
-        return meals
-                .values()
-                .stream()
-                .filter(predicate)
-                .sorted(Comparator.comparing(Meal::getDateTime).reversed())
-                .collect(Collectors.toList());
+        return meals == null ? Collections.emptyList() :
+                meals
+                        .values()
+                        .stream()
+                        .filter(predicate)
+                        .sorted(Comparator.comparing(Meal::getDateTime).reversed())
+                        .collect(Collectors.toList());
     }
 }
 

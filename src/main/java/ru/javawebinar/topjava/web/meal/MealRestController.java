@@ -54,8 +54,8 @@ public class MealRestController {
         service.update(meal, userId);
     }
 
-    public void delete(int id, int userId) {
-        userId = SecurityUtil.authUserId();
+    public void delete(int id) {
+        int userId = SecurityUtil.authUserId();
         log.info("delete meal with id {}", id);
         service.delete(id, userId);
     }
@@ -71,6 +71,5 @@ public class MealRestController {
 
         return MealsUtil.getFilteredTos(service.filterByDate(sD, eD, userId),
                 SecurityUtil.authUserCaloriesPerDay(), sT, eT);
-
     }
 }
