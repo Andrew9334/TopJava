@@ -23,6 +23,7 @@ public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
 
     private ConfigurableApplicationContext appCtx;
+
     private MealRestController mealRestController;
 
     @Override
@@ -34,15 +35,20 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setCharacterEncoding("UTF-8");
+        String id = request.getParameter("id");
 
-        Meal meal = new Meal(LocalDateTime.parse(request.getParameter("dateTime")),
+        Meal meal = new Meal(id.isEmpty() ? null : Integer.valueOf(id),
+                LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
                 Integer.parseInt(request.getParameter("calories"))
         );
 
+        log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
         if (request.getParameter("id").isEmpty()) {
+            log.info("create meal{}", id);
             mealRestController.create(meal);
         } else {
+            log.info("update meal{}", id);
             mealRestController.update(meal, getId(request));
         }
         response.sendRedirect("meals");
