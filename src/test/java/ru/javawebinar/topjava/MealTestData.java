@@ -15,6 +15,8 @@ public class MealTestData {
 
     public static final int MEAL_ID = START_SEQ + 3;
 
+    public static final int MEAL_ADMIN_ID = START_SEQ + 10;
+
     public static final int NOT_FOUND = 50;
 
     public static final Meal meal1 = new Meal(MEAL_ID, LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500);
@@ -24,6 +26,8 @@ public class MealTestData {
     public static final Meal meal5 = new Meal(MEAL_ID + 4, LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000);
     public static final Meal meal6 = new Meal(MEAL_ID + 5, LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500);
     public static final Meal meal7 = new Meal(MEAL_ID + 6, LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410);
+    public static final Meal mealAdmin1 = new Meal(MEAL_ADMIN_ID, LocalDateTime.of(2015, Month.JUNE, 1, 14, 0), "Админ ланч", 510);
+    public static final Meal mealAdmin2 = new Meal(MEAL_ADMIN_ID + 1, LocalDateTime.of(2015, Month.JUNE, 1, 21, 0), "Админ ужин", 1500);
 
     public static List<Meal> meals = Arrays.asList(meal7, meal6, meal5, meal4, meal3, meal2, meal1);
 
