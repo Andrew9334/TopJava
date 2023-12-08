@@ -4,6 +4,7 @@ import ru.javawebinar.topjava.model.Meal;
 
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class MealTestData {
     }
 
     public static Meal getUpdate() {
-        return new Meal(MEAL_ID, meal1.getDateTime(), "Update meal", 300);
+        return new Meal(MEAL_ID, meal1.getDateTime().minus(2, ChronoUnit.HOURS), "Update meal", 300);
     }
 
     public static void assertMatch(Meal actual, Meal expected) {
