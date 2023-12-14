@@ -25,13 +25,13 @@ public class TimingRules {
     };
 
     public static final ExternalResource SUMMARY = new ExternalResource() {
-        //обнуляем перед запуском тестов класса
+        //reset before starting tests
         @Override
         protected void before() throws Throwable {
             results.setLength(0);
         }
 
-        //выводим отформатированный результат
+        //print formatted result
         @Override
         protected void after() {
             log.info('\n' + "------------------------------------" +
