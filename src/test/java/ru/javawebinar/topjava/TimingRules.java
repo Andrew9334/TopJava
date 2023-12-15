@@ -35,7 +35,8 @@ public class TimingRules {
         @Override
         protected void after() {
             log.info('\n' + "------------------------------------" +
-                    "\nTest Timing\n" + "------------------------------------" +
+                    "\nTest Timing                                                                      " +
+                    "          Duration, ms\n" +
                     "\n" + results + "------------------------------------" + "\n");
         }
     };
