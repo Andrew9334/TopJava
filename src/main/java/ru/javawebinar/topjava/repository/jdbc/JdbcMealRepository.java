@@ -30,6 +30,7 @@ public abstract class JdbcMealRepository<T> implements MealRepository {
 
     private final SimpleJdbcInsert insertMeal;
 
+    //take this idea from tips
     abstract T convertTimeToProfilesDb(LocalDateTime localDateTime);
 
     @Autowired
