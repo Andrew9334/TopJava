@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.web.user;
+package ru.javawebinar.topjava.web.meal;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
-import ru.javawebinar.topjava.web.meal.MealRestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
@@ -23,12 +22,6 @@ public class JspMealController {
 
     @Autowired
     private MealService service;
-
-    @GetMapping("/")
-    public String root() {
-        log.info("root");
-        return "index";
-    }
 
     @GetMapping("/create")
     public String create(HttpServletRequest request) {

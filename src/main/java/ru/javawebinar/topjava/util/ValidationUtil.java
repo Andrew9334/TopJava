@@ -3,12 +3,28 @@ package ru.javawebinar.topjava.util;
 
 import org.springframework.core.NestedExceptionUtils;
 import org.springframework.lang.NonNull;
+import org.springframework.util.CollectionUtils;
 import ru.javawebinar.topjava.model.AbstractBaseEntity;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import javax.validation.*;
+import java.util.Set;
+
 public class ValidationUtil {
 
+    static ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+    static Validator validator = validatorFactory.getValidator();
+
     private ValidationUtil() {
+    }
+
+    public static  <T> boolean isValid(T t) {
+        Set<ConstraintViolation<T>> constraintViolations = validator.validate(t);
+
+        if (CollectionUtils.isEmpty(constraintViolations)) {
+            throw new ConstraintViolationException(constraintViolations);
+        }
+        return true;
     }
 
     public static <T> T checkNotFoundWithId(T object, int id) {
