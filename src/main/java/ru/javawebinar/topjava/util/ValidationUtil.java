@@ -18,7 +18,7 @@ public class ValidationUtil {
     private ValidationUtil() {
     }
 
-    public static  <T> boolean isValid(T t) {
+    public static <T> boolean isValid(T t) {
         Set<ConstraintViolation<T>> constraintViolations = validator.validate(t);
 
         if (CollectionUtils.isEmpty(constraintViolations)) {

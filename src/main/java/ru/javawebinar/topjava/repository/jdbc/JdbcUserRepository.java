@@ -83,7 +83,7 @@ public class JdbcUserRepository implements UserRepository {
     public User getByEmail(String email) {
 //        return jdbcTemplate.queryForObject("SELECT * FROM users WHERE email=?", ROW_MAPPER, email);
         List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE email=?", userExtractor, email);
-        return DataAccessUtils.singleResult(users);
+        return addRole(DataAccessUtils.singleResult(users));
     }
 
     @Override
@@ -91,13 +91,14 @@ public class JdbcUserRepository implements UserRepository {
         return jdbcTemplate.query("SELECT * FROM users ORDER BY name, email", userExtractor);
     }
 
-    private void addRole(User user) {
+    private User addRole(User user) {
         Set<Role> role = user.getRoles();
         jdbcTemplate.batchUpdate("INSERT INTO user_role VALUES(?,?)", role, role.size(),
                 ((ps, rl) -> {
                     ps.setInt(1, user.id());
                     ps.setString(2, rl.name());
                 }));
+        return user;
     }
 
     private void deleteRole(User user) {
