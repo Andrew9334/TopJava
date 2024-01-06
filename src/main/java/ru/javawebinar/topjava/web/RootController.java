@@ -43,7 +43,7 @@ public class RootController {
         return "redirect:meals";
     }
 
-//    @GetMapping("")
+//    @GetMapping("/meals")
 //    public String getMeals(Model model) {
 //        log.info("meals");
 //        model.addAttribute("meals",
