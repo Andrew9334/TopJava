@@ -53,4 +53,8 @@ public abstract class AbstractServiceTest {
             }
         });
     }
+
+    public boolean checkJpa() {
+        return environment.acceptsProfiles(org.springframework.core.env.Profiles.of(Profiles.JPA, Profiles.DATAJPA));
+    }
 }

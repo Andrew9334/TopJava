@@ -3,7 +3,6 @@ package ru.javawebinar.topjava.util;
 
 import org.springframework.core.NestedExceptionUtils;
 import org.springframework.lang.NonNull;
-import org.springframework.util.CollectionUtils;
 import ru.javawebinar.topjava.model.AbstractBaseEntity;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
@@ -21,7 +20,7 @@ public class ValidationUtil {
     public static <T> boolean isValid(T t) {
         Set<ConstraintViolation<T>> constraintViolations = validator.validate(t);
 
-        if (CollectionUtils.isEmpty(constraintViolations)) {
+        if (!constraintViolations.isEmpty()) {
             throw new ConstraintViolationException(constraintViolations);
         }
         return true;
