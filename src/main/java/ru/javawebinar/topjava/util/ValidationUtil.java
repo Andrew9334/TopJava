@@ -17,13 +17,12 @@ public class ValidationUtil {
     private ValidationUtil() {
     }
 
-    public static <T> boolean isValid(T t) {
+    public static <T> void validate(T t) {
         Set<ConstraintViolation<T>> constraintViolations = validator.validate(t);
 
         if (!constraintViolations.isEmpty()) {
             throw new ConstraintViolationException(constraintViolations);
         }
-        return true;
     }
 
     public static <T> T checkNotFoundWithId(T object, int id) {

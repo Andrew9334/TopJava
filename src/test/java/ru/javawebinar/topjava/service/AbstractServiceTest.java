@@ -5,18 +5,13 @@ import org.junit.Rule;
 import org.junit.rules.ExternalResource;
 import org.junit.rules.Stopwatch;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.javawebinar.topjava.ActiveDbProfileResolver;
-import ru.javawebinar.topjava.Profiles;
 import ru.javawebinar.topjava.TimingRules;
-
-import java.util.Arrays;
 
 import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.util.ValidationUtil.getRootCause;
@@ -30,12 +25,12 @@ import static ru.javawebinar.topjava.util.ValidationUtil.getRootCause;
 @ActiveProfiles(resolver = ActiveDbProfileResolver.class)
 public abstract class AbstractServiceTest {
 
-    @Autowired
-    private Environment environment;
+//    @Autowired
+//    private Environment environment;
 
-    public boolean checkProfiles() throws Exception {
-        return Arrays.stream(environment.getActiveProfiles()).equals(Profiles.JDBC);
-    }
+//    public boolean isJdbc() throws Exception {
+//        return Arrays.stream(environment.getActiveProfiles()).equals(Profiles.JDBC);
+//    }
 
     @ClassRule
     public static ExternalResource summary = TimingRules.SUMMARY;
@@ -54,7 +49,7 @@ public abstract class AbstractServiceTest {
         });
     }
 
-    public boolean checkJpa() {
-        return environment.acceptsProfiles(org.springframework.core.env.Profiles.of(Profiles.JPA, Profiles.DATAJPA));
-    }
+//    public boolean isJpa() {
+//        return environment.acceptsProfiles(org.springframework.core.env.Profiles.of(Profiles.JPA, Profiles.DATAJPA));
+//    }
 }
