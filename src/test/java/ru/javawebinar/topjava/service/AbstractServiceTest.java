@@ -25,13 +25,6 @@ import static ru.javawebinar.topjava.util.ValidationUtil.getRootCause;
 @ActiveProfiles(resolver = ActiveDbProfileResolver.class)
 public abstract class AbstractServiceTest {
 
-//    @Autowired
-//    private Environment environment;
-
-//    public boolean isJdbc() throws Exception {
-//        return Arrays.stream(environment.getActiveProfiles()).equals(Profiles.JDBC);
-//    }
-
     @ClassRule
     public static ExternalResource summary = TimingRules.SUMMARY;
 
@@ -48,8 +41,4 @@ public abstract class AbstractServiceTest {
             }
         });
     }
-
-//    public boolean isJpa() {
-//        return environment.acceptsProfiles(org.springframework.core.env.Profiles.of(Profiles.JPA, Profiles.DATAJPA));
-//    }
 }
