@@ -3,6 +3,7 @@ package ru.javawebinar.topjava.service;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import ru.javawebinar.topjava.UserTestData;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
@@ -11,6 +12,7 @@ import javax.validation.ConstraintViolationException;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.UserTestData.*;
@@ -21,29 +23,19 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     protected UserService service;
 
     @Test
-    public void create() {
-        User created = service.create(getNew());
-        int newId = created.id();
-        User newUser = getNew();
-        newUser.setId(newId);
-        USER_MATCHER.assertMatch(created, newUser);
-        USER_MATCHER.assertMatch(service.get(newId), newUser);
+    public void createWithOneRole() {
+        create(UserTestData::getNew);
+    }
+
+    @Test
+    public void createWithMultiplyRole() {
+        create(UserTestData::getNewMultiplyRoles);
     }
 
     @Test
     public void duplicateMailCreate() {
         assertThrows(DataAccessException.class, () ->
                 service.create(new User(null, "Duplicate", "user@yandex.ru", "newPass", Role.USER)));
-    }
-
-    @Test
-    public void createWithMultiplyRole() {
-        User created = service.create(getNewMultiplyRoles());
-        int newId = created.id();
-        User newMultiplyUser = getNewMultiplyRoles();
-        newMultiplyUser.setId(newId);
-        USER_MATCHER.assertMatch(created, newMultiplyUser);
-        USER_MATCHER.assertMatch(service.get(newId), newMultiplyUser);
     }
 
     @Test
@@ -101,5 +93,14 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
         validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "User", "mail@yandex.ru", "  ", Role.USER)));
         validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "User", "mail@yandex.ru", "password", 9, true, new Date(), Set.of())));
         validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "User", "mail@yandex.ru", "password", 10001, true, new Date(), Set.of())));
+    }
+
+    private void create(Supplier<User> supplier) {
+        User created = service.create(supplier.get());
+        int newId = created.id();
+        User newUser = supplier.get();
+        newUser.setId(newId);
+        USER_MATCHER.assertMatch(created, newUser);
+        USER_MATCHER.assertMatch(service.get(newId), newUser);
     }
 }
