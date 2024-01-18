@@ -1,8 +1,6 @@
 package ru.javawebinar.topjava.service;
 
-import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import ru.javawebinar.topjava.model.Role;
@@ -17,7 +15,6 @@ import java.util.Set;
 import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.UserTestData.*;
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Autowired
@@ -31,7 +28,6 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
         newUser.setId(newId);
         USER_MATCHER.assertMatch(created, newUser);
         USER_MATCHER.assertMatch(service.get(newId), newUser);
-
     }
 
     @Test
@@ -42,8 +38,12 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Test
     public void createWithMultiplyRole() {
-        assertThrows(DataAccessException.class, () ->
-                service.create(new User(null, "UserWithMultiplyRole", "multiply@yandex.ru", "newPass", Role.USER, Role.ADMIN)));
+        User created = service.create(getNewMultiplyRoles());
+        int newId = created.id();
+        User newMultiplyUser = getNewMultiplyRoles();
+        newMultiplyUser.setId(newId);
+        USER_MATCHER.assertMatch(created, newMultiplyUser);
+        USER_MATCHER.assertMatch(service.get(newId), newMultiplyUser);
     }
 
     @Test
@@ -58,12 +58,10 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void a2get() {
-        User user = service.get(USER_ID);
+    public void get() {
+        User user = service.get(ADMIN_ID);
         USER_MATCHER.assertMatch(user, admin);
-        USER_MATCHER.assertMatch(user, user);
     }
-
 
     @Test
     public void getNotFound() {
@@ -77,21 +75,21 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void a1update() {
+    public void update() {
         User updated = getUpdated();
         service.update(updated);
         USER_MATCHER.assertMatch(service.get(USER_ID), getUpdated());
-        USER_MATCHER.assertMatch(service.getAll(), admin, guest, getUpdated());
     }
 
     @Test
     public void updateUserWithMultiplyRole() {
-        assertThrows(DataAccessException.class, () ->
-                service.update(new User(null, "UserWithMultiplyRole", "multiply@yandex.ru", "newPass", Role.USER, Role.ADMIN)));
+        User updated = getUpdatedMultiplyRoles();
+        service.update(updated);
+        USER_MATCHER.assertMatch(service.get(USER_ID), getUpdatedMultiplyRoles());
     }
 
     @Test
-    public void a2getAll() {
+    public void getAll() {
         List<User> all = service.getAll();
         USER_MATCHER.assertMatch(all, admin, guest, user);
     }
