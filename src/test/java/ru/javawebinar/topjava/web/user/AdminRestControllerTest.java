@@ -21,6 +21,8 @@ class AdminRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = AdminRestController.REST_URL + '/';
 
+    private static final String REST_URL_WITH_MEAL = AdminRestController.REST_URL + "/with-meals";
+
     @Autowired
     private UserService userService;
 
