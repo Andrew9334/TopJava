@@ -55,8 +55,6 @@
         <property name="fallbackToSystemLocale" value="false"/>
     </bean>
 
-<!--    <mvc:annotation-driven conversion-service="conversionService"/>-->
-
     <bean id="customDateConverter" class="ru.javawebinar.topjava.web.converter.StringToLocalDateConverter"/>
     <bean id="customTimeConverter" class="ru.javawebinar.topjava.web.converter.StringToLocalTimeConverter"/>
 
@@ -65,22 +63,7 @@
             <set>
                 <ref bean="stringToLocalDateConverter"/>
                 <ref bean="stringToLocalTimeConverter"/>
-                <!--                <ref bean="customDateFormatter"/>-->
-                <!--                <ref bean="customTimeFormatter"/>-->
             </set>
         </property>
     </bean>
-
-    <!--    if you want to use formatter-->
-    <!--    <bean id="customDateFormatter" class="ru.javawebinar.topjava.web.formatter.CustomDateFormatter"/>-->
-    <!--    <bean id="customTimeFormatter" class="ru.javawebinar.topjava.web.formatter.CustomTimeFormatter"/>-->
-
-    <!--    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">-->
-    <!--        <property name="converters">-->
-    <!--            <set>-->
-    <!--                <ref bean="customDateFormatter"/>-->
-    <!--                <ref bean="customTimeFormatter"/>-->
-    <!--            </set>-->
-    <!--        </property>-->
-    <!--    </bean>-->
 </beans>

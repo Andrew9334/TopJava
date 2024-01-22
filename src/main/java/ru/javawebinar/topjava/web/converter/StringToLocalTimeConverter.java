@@ -9,10 +9,6 @@ public class StringToLocalTimeConverter implements Converter<String, LocalTime> 
 
     private String timePattern = "HH:mm";
 
-    public String getTimePattern() {
-        return timePattern;
-    }
-
     public void setTimePattern(String timePattern) {
         this.timePattern = timePattern;
     }
