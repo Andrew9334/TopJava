@@ -17,25 +17,25 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Comparing actual and expected objects via AssertJ
  * Support converting json MvcResult to objects for comparation.
  */
-public class TestMatcher<T> {
+public class MatcherFactory<T> {
     private final Class<T> clazz;
     private final BiConsumer<T, T> assertion;
     private final BiConsumer<Iterable<T>, Iterable<T>> iterableAssertion;
 
-    public TestMatcher(Class<T> clazz, BiConsumer<T, T> assertion, BiConsumer<Iterable<T>, Iterable<T>> iterableAssertion) {
+    public MatcherFactory(Class<T> clazz, BiConsumer<T, T> assertion, BiConsumer<Iterable<T>, Iterable<T>> iterableAssertion) {
         this.clazz = clazz;
         this.assertion = assertion;
         this.iterableAssertion = iterableAssertion;
     }
 
-    public static <T> TestMatcher<T> usingIgnoringFieldsComparator(Class<T> clazz, String... fieldsToIgnore) {
-        return new TestMatcher<>(clazz,
+    public static <T> MatcherFactory<T> usingIgnoringFieldsComparator(Class<T> clazz, String... fieldsToIgnore) {
+        return new MatcherFactory<>(clazz,
                 (a, e) -> assertThat(a).usingRecursiveComparison().ignoringFields(fieldsToIgnore).isEqualTo(e),
                 (a, e) -> assertThat(a).usingElementComparatorIgnoringFields(fieldsToIgnore).isEqualTo(e));
     }
 
-    public static <T> TestMatcher<T> usingEqualsComparator(Class<T> clazz) {
-        return new TestMatcher<>(clazz,
+    public static <T> MatcherFactory<T> usingEqualsComparator(Class<T> clazz) {
+        return new MatcherFactory<>(clazz,
                 (a, e) -> assertThat(a).isEqualTo(e),
                 (a, e) -> assertThat(a).isEqualTo(e));
     }
