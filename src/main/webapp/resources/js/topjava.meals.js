@@ -39,3 +39,15 @@ $(function () {
         )
     );
 });
+
+$(function () {
+    $("#refreshButton").click(function () {
+        $.ajax({
+            url: mealsAjaxUrl,
+            cache: false,
+            success: function (html) {
+                $("#filter").html(html);
+            }
+        });
+    });
+});
