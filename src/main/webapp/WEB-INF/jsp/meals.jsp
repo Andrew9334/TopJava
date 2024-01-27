@@ -6,7 +6,7 @@
 <jsp:include page="fragments/headTag.jsp"/>
 <body>
 <script src="resources/js/topjava.common.js" defer></script>
-<script src="resources/js/topjava.meals.js"
+<script src="resources/js/topjava.meals.js" defer></script>
 <jsp:include page="fragments/bodyHeader.jsp"/>
 
 <div class="jumbotron pt-4">
@@ -22,7 +22,7 @@
                     <label for="endDate" class="col-form-label"><spring:message code="meal.endDate"/></label>
                     <label type="date" class="form-control" id="endDate" value="${param.endDate}"></label>
                 </div>
-                <div class="offset-2 col-2">
+                <div class="col-2">
                     <label for="startTime" class="col-form-label"><spring:message code="meal.startTime"/></label>
                     <input type="time" class="form-control" id="startTime" value="${param.startTime}">
                 </div>
@@ -34,8 +34,7 @@
         </div>
         <button class="btn btn-danger" onclick="clear()">
             <span class="fa fa-remove"></span>
-            <spring:message code="common.cancel">
-            </spring:message>
+            <spring:message code="common.cancel"/>
         </button>
         <button class="btn btn-primary" onclick="add()">
             <span class="fa fa-plus"></span>

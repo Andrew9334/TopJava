@@ -59,4 +59,4 @@ $(function (checkbox, id) {
     }).fail(function () {
         $(checkbox).prop("checked", !enable);
     });
-})
+});
