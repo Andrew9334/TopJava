@@ -79,6 +79,6 @@ function failNoty(jqXHR) {
     failedNote.show()
 }
 
-function updateTableByData(date) {
+function updateTableByData(data) {
     ctx.datatableApi.clear().rows.add(data).draw();
 }
