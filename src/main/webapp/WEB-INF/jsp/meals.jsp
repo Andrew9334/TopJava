@@ -20,7 +20,7 @@
                 </div>
                 <div class="col-3">
                     <label for="endDate" class="col-form-label"><spring:message code="meal.endDate"/></label>
-                    <label type="date" class="form-control" id="endDate" value="${param.endDate}"></label>
+                    <input type="date" class="form-control" id="endDate" value="${param.endDate}">
                 </div>
                 <div class="col-2">
                     <label for="startTime" class="col-form-label"><spring:message code="meal.startTime"/></label>
@@ -32,6 +32,13 @@
                 </div>
             </form>
         </div>
+        <div class="card-footer text-right">
+            <button class="btn btn-primary" onclick="updateFiltered()">
+                <span class="fa fa-filter"></span>
+                <spring:message code="meal.filter"/>
+            </button>
+        </div>
+        <br>
         <button class="btn btn-danger" onclick="clear()">
             <span class="fa fa-remove"></span>
             <spring:message code="common.cancel"/>
@@ -40,6 +47,7 @@
             <span class="fa fa-plus"></span>
             <spring:message code="common.add"/>
         </button>
+        <br>
         <table class="table table-striped" id="datatable">
             <thead>
             <tr>

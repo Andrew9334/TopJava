@@ -1,44 +1,53 @@
 const mealsAjaxUrl = "meals/";
 
-const ctx = {
+var ctx = {
     ajaxUrl: mealsAjaxUrl
 };
 
 $(function () {
-    makeEditable(
-        $("#datatable".DataTable({
-                "paging": false,
-                "info": true,
-                "columns": [
-                    {
-                        "data": "dateTime"
-                    },
-                    {
-                        "data": "description"
-                    },
-                    {
-                        "data": "calories"
-                    },
-                    {
-                        "defaultContent": "Edit",
-                        "orderable": false
-                    },
-                    {
-                        "defaultContent": "Delete",
-                        "orderable": false
-                    }
-                ],
-                "order":[
-                    [
-                        0,
-                        "asc"
-                    ]
+    ctx = {
+        ajaxUrl: "profile/meals/",
+        datatableApi: $("#datatable").DataTable({
+            "paging": false,
+            "info": true,
+            "columns": [
+                {
+                    "data": "dateTime"
+                },
+                {
+                    "data": "description"
+                },
+                {
+                    "data": "calories"
+                },
+                {
+                    "defaultContent": "Edit",
+                    "orderable": false
+                },
+                {
+                    "defaultContent": "Delete",
+                    "orderable": false
+                }
+            ],
+            "order": [
+                [
+                    0,
+                    "desc"
                 ]
-
-            })
-        )
-    );
+            ]
+        }),
+        updateTable: updateFiltered
+    };
+    makeEditable();
 });
+
+function updateFiltered() {
+    $.ajax({
+        type: "GET",
+        url: "rest/profile/meals/filter",
+        data: $("#filter").serialize()
+    }).done(updateTableByData())
+}
 
 $(function () {
     $("#refreshButton").click(function () {

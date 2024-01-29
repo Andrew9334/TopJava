@@ -1,62 +1,70 @@
 const userAjaxUrl = "admin/users/";
 
 // https://stackoverflow.com/a/5064235/548473
-const ctx = {
+var ctx = {
     ajaxUrl: userAjaxUrl
 };
 
-// $(document).ready(function () {
 $(function () {
-    makeEditable(
-        $("#datatable").DataTable({
-            "paging": false,
-            "info": true,
-            "columns": [
-                {
-                    "data": "name"
-                },
-                {
-                    "data": "email"
-                },
-                {
-                    "data": "roles"
-                },
-                {
-                    "data": "enabled"
-                },
-                {
-                    "data": "registered"
-                },
-                {
-                    "defaultContent": "Edit",
-                    "orderable": false
-                },
-                {
-                    "defaultContent": "Delete",
-                    "orderable": false
-                }
-            ],
-            "order": [
-                [
-                    0,
-                    "asc"
+    $(function () {
+        // https://stackoverflow.com/a/5064235/548473
+        ctx = {
+            ajaxUrl: "admin/users/",
+            datatableApi: $("#datatable").DataTable({
+                "paging": false,
+                "info": true,
+                "columns": [
+                    {
+                        "data": "name"
+                    },
+                    {
+                        "data": "email"
+                    },
+                    {
+                        "data": "roles"
+                    },
+                    {
+                        "data": "enabled"
+                    },
+                    {
+                        "data": "registered"
+                    },
+                    {
+                        "defaultContent": "Edit",
+                        "orderable": false
+                    },
+                    {
+                        "defaultContent": "Delete",
+                        "orderable": false
+                    }
+                ],
+                "order": [
+                    [
+                        0,
+                        "asc"
+                    ]
                 ]
-            ]
-        })
-    );
+            }),
+            updateTable: function () {
+                $.get("admin/users/", updateTableByData);
+            }
+        };
+        makeEditable();
+    });
 });
 
-$(function (checkbox, id) {
-    var enable = checkbox.is(":checked");
 
+function enable(chkbox, id) {
+    var enabled = chkbox.is(":checked");
+//  https://stackoverflow.com/a/22213543/548473
     $.ajax({
         url: userAjaxUrl + id,
         type: "POST",
-        data: "enable=" + enable
+        data: "enabled=" + enabled
     }).done(function () {
-        checkbox.closest("tr").attr("data-userEnable", enable);
-        successNoty(enable ? "Enable" : "Disable");
+        chkbox.closest("tr").attr("data-userEnabled", enabled);
+        successNoty(enabled ? "Enabled" : "Disabled");
     }).fail(function () {
-        $(checkbox).prop("checked", !enable);
+        $(chkbox).prop("checked", !enabled);
     });
-});
+}

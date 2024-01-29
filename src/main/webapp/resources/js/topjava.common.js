@@ -1,4 +1,4 @@
-let form;
+var form;
 
 function makeEditable(datatableApi) {
     ctx.datatableApi = datatableApi;
@@ -45,7 +45,7 @@ function save() {
         data: form.serialize()
     }).done(function () {
         $("#editRow").modal("hide");
-        updateTable();
+        ctx.updateTable;
         successNoty("Saved");
     });
 }
@@ -77,4 +77,8 @@ function failNoty(jqXHR) {
         layout: "bottomRight"
     });
     failedNote.show()
+}
+
+function updateTableByData(date) {
+    ctx.datatableApi.clear().rows.add(data).draw();
 }
