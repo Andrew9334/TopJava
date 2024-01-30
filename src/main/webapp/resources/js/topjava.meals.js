@@ -1,4 +1,4 @@
-const mealsAjaxUrl = "meals/";
+var mealsAjaxUrl = "profile/meals";
 
 var ctx = {
     ajaxUrl: mealsAjaxUrl
@@ -6,7 +6,7 @@ var ctx = {
 
 $(function () {
     ctx = {
-        ajaxUrl: "profile/meals/",
+        ajaxUrl: "profile/meals",
         datatableApi: $("#datatable").DataTable({
             "paging": false,
             "info": true,
@@ -44,7 +44,7 @@ $(function () {
 function updateFiltered() {
     $.ajax({
         type: "GET",
-        url: "rest/profile/meals/filter",
+        url: "/profile/meals/filter",
         data: $("#filter").serialize()
     }).done(updateTableByData())
 }
