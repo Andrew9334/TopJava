@@ -17,7 +17,6 @@
                 <div class="col-3">
                     <label for="startDate" class="col-form-label"><spring:message code="meal.startDate"/></label>
                     <input type="date" class="form-control" id="startDate" name="startDate">
-
                 </div>
                 <div class="col-3">
                     <label for="endDate" class="col-form-label"><spring:message code="meal.endDate"/></label>
@@ -95,7 +94,6 @@
                         <input type="datetime-local" class="form-control" id="dateTime" name="dateTime"
                                placeholder="<spring:message code="meal.dateTime"/>">
                     </div>
-
                     <div class="form-group">
                         <label for="description" class="col-form-label"><spring:message
                                 code="meal.description"/></label>
