@@ -24,7 +24,7 @@ public class MealUIController extends AbstractMealController {
     }
 
     @Override
-    @GetMapping("/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
         super.delete(id);

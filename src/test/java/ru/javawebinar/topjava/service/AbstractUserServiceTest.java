@@ -89,7 +89,7 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Test
     void enable() throws Exception {
-        service.enable(USER_ID, false);
+        service.enabled(USER_ID, false);
         assertFalse(service.get(USER_ID).isEnabled());
     }
 }
