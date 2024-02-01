@@ -23,7 +23,7 @@ tr[data-meal-excess="true"] {
     color: red;
 }
 
-tr[data-userEnable="false"] {
+tr[data-userEnabled="false"] {
     opacity: 0.3;
 }
 

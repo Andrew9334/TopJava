@@ -58,9 +58,9 @@ public class UserService {
     }
 
     @Transactional
-    public void enable(int id, boolean enable) {
+    public void enabled(int id, boolean enabled) {
         User user = get(id);
-        user.setEnabled(enable);
+        user.setEnabled(enabled);
         repository.save(user);
     }
 }

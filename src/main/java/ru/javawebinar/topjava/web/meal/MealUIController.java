@@ -15,7 +15,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "meals", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/profile/meals", produces = MediaType.APPLICATION_JSON_VALUE)
 public class MealUIController extends AbstractMealController {
     @Override
     @GetMapping
@@ -24,7 +24,7 @@ public class MealUIController extends AbstractMealController {
     }
 
     @Override
-    @GetMapping("/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
         super.delete(id);
