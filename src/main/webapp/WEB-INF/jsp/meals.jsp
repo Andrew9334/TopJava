@@ -48,10 +48,6 @@
             <span class="fa fa-plus"></span>
             <spring:message code="common.add"/>
         </button>
-<%--        <button class="btn btn-danger" onclick="clearFilter()">--%>
-<%--            <span class="fa fa-trash-o fa-lg"></span>--%>
-<%--            <spring:message code="common.cancel"/>--%>
-<%--        </button>--%>
         <br>
         <table class="table table-striped" id="datatable">
             <thead>
