@@ -57,10 +57,11 @@ public class UserService {
         return checkNotFoundWithId(repository.getWithMeals(id), id);
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     @Transactional
-    public void enabled(int id, boolean enabled) {
+    public void enable(int id, boolean isEnable) {
         User user = get(id);
-        user.setEnabled(enabled);
+        user.setEnabled(isEnable);
         repository.save(user);
     }
 }

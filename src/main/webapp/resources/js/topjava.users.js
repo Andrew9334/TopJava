@@ -1,57 +1,11 @@
-var ctx = "admin/users/";
-
-// $(document).ready(function () {
-$(function () {
-    // https://stackoverflow.com/a/5064235/548473
-    ctx = {
-        ajaxUrl: "admin/users/",
-        datatableApi: $("#datatable").DataTable({
-            "paging": false,
-            "info": true,
-            "columns": [
-                {
-                    "data": "name"
-                },
-                {
-                    "data": "email"
-                },
-                {
-                    "data": "roles"
-                },
-                {
-                    "data": "enabled"
-                },
-                {
-                    "data": "registered"
-                },
-                {
-                    "defaultContent": "Edit",
-                    "orderable": false
-                },
-                {
-                    "defaultContent": "Delete",
-                    "orderable": false
-                }
-            ],
-            "order": [
-                [
-                    0,
-                    "asc"
-                ]
-            ]
-        }),
-        updateTable: function () {
-            $.get("admin/users/", updateTableByData);
-        }
-    };
-    makeEditable();
-});
+var ctx;
+var userAjaxUrl = "admin/users/";
 
 function enable(chkbox, id) {
     var enabled = chkbox.is(":checked");
 //  https://stackoverflow.com/a/22213543/548473
     $.ajax({
-        url: "admin/users/" + id,
+        url: userAjaxUrl + id,
         type: "POST",
         data: "enabled=" + enabled
     }).done(function () {
@@ -59,5 +13,52 @@ function enable(chkbox, id) {
         successNoty(enabled ? "Enabled" : "Disabled");
     }).fail(function () {
         $(chkbox).prop("checked", !enabled);
+    });
+
+// $(document).ready(function () {
+    $(function () {
+        // https://stackoverflow.com/a/5064235/548473
+        ctx = {
+            ajaxUrl: userAjaxUrl,
+            datatableApi: $("#datatable").DataTable({
+                "paging": false,
+                "info": true,
+                "columns": [
+                    {
+                        "data": "name"
+                    },
+                    {
+                        "data": "email"
+                    },
+                    {
+                        "data": "roles"
+                    },
+                    {
+                        "data": "enabled"
+                    },
+                    {
+                        "data": "registered"
+                    },
+                    {
+                        "defaultContent": "Edit",
+                        "orderable": false
+                    },
+                    {
+                        "defaultContent": "Delete",
+                        "orderable": false
+                    }
+                ],
+                "order": [
+                    [
+                        0,
+                        "asc"
+                    ]
+                ]
+            }),
+            updateTable: function () {
+                $.get(userAjaxUrl, updateTableByData);
+            }
+        };
+        makeEditable();
     });
 }
