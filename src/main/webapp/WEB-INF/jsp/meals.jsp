@@ -126,4 +126,5 @@
 </div>
 <jsp:include page="fragments/footer.jsp"/>
 </body>
+<jsp:include page="i18n.jsp"/>
 </html>
