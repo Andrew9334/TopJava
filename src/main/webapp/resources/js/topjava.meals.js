@@ -18,14 +18,10 @@ function clearFilter() {
 }
 
 $(function () {
-    makeEditable(
-        $("#datatable").DataTable({
-            "ajax": {
-                "url": mealAjaxUrl,
-                "dataSrc": ""
-            },
-            "paging": false,
-            "info": true,
+    makeEditable({
+            // $("#datatable").DataTable({
+            //     "paging": false,
+            //     "info": true,
             "columns": [
                 {
                     "data": "dateTime",
@@ -64,6 +60,30 @@ $(function () {
                     $(row).attr("data-meal-excess", data.excess)
                 }
             }
-        })
+        }
     );
+
+    $('#startDate').datetimepicker({
+        timepicker: false,
+        format: 'Y-m-d',
+    });
+
+    $('#endDate').datetimepicker({
+        timepicker: false,
+        format: 'Y-m-d',
+    });
+
+    $('#startTime').datetimepicker({
+        datepicker: false,
+        format: 'H:i',
+    });
+
+    $('#endTime').datetimepicker({
+        datepicker: false,
+        format: 'H:i',
+    });
+
+    $('#dateTime').datetimepicker({
+        format: 'Y-m-d H:i'
+    });
 });
