@@ -13,6 +13,8 @@ import ru.javawebinar.topjava.web.SecurityUtil;
 
 import javax.validation.Valid;
 
+import static ru.javawebinar.topjava.web.ExceptionInfoHandler.EXCEPTION_DUPLICATE_EMAIL;
+
 @Controller
 @RequestMapping("/profile")
 public class ProfileUIController extends AbstractUserController {
@@ -27,12 +29,11 @@ public class ProfileUIController extends AbstractUserController {
         if (result.hasErrors()) {
             return "profile";
         }
-
         try {
-            super.update(userTo, SecurityUtil.authUserId());
-            SecurityUtil.get().setTo(userTo);
-            status.setComplete();
-            return "redirect:/meals";
+        super.update(userTo, SecurityUtil.authUserId());
+        SecurityUtil.get().setTo(userTo);
+        status.setComplete();
+        return "redirect:/meals";
         } catch (DataIntegrityViolationException e) {
             result.rejectValue("email", EXCEPTION_DUPLICATE_EMAIL);
             return "profile";

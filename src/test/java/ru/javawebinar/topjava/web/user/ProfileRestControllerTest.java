@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.UserService;
 import ru.javawebinar.topjava.to.UserTo;
@@ -106,5 +108,17 @@ class ProfileRestControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(userWithInvalidData)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @Transactional(propagation = Propagation.NEVER)
+    void updateWithDuplicateEmail() throws Exception {
+        UserTo userWithDuplicateEmail = new UserTo(null, "name", "user@yandex.ru", "password", 2000);
+        perform(MockMvcRequestBuilders.put(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(admin))
+                .content(JsonUtil.writeValue(userWithDuplicateEmail)))
+                .andDo(print())
+                .andExpect(status().isConflict());
     }
 }

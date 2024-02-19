@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.UserService;
@@ -97,6 +98,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @Transactional
     void createWithLocation() throws Exception {
         User newUser = getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
@@ -145,7 +147,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void createWithInvalidDate() throws Exception {
+    void createWithInvalidData() throws Exception {
         User userWithInvalidData = new User(USER_ID, null, "user@yandex.ru", "pass", 2000, Role.ADMIN, Role.USER);
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -156,13 +158,36 @@ class AdminRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void updateWithInvalidDate() throws Exception {
-        User userWithInvalidDate = new User(user);
-        userWithInvalidDate.setName("");
+    void updateWithInvalidData() throws Exception {
+        User userWithInvalidData = new User(user);
+        userWithInvalidData.setName("");
         perform(MockMvcRequestBuilders.put(REST_URL + USER_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(admin))
-                .content(jsonWithPassword(userWithInvalidDate, "passwords")))
+                .content(jsonWithPassword(userWithInvalidData, "passwords")))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    void createWithDuplicateEmail() throws Exception {
+        User userWithDuplicateEmail = new User(USER_ID, "user", user.getEmail(), "pass", 2000, Role.USER);
+        perform(MockMvcRequestBuilders.post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(admin))
+                .content(jsonWithPassword(userWithDuplicateEmail, "password")))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    void updateWithDuplicateEmail() throws Exception {
+        User userWithDuplicateEmail = new User(admin);
+        userWithDuplicateEmail.setEmail("user@yandex.ru");
+        perform(MockMvcRequestBuilders.put(REST_URL + USER_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(admin))
+                .content(jsonWithPassword(userWithDuplicateEmail, "password")))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
