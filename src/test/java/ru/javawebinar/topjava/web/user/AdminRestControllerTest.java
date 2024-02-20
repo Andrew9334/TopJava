@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
@@ -98,7 +99,6 @@ class AdminRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @Transactional
     void createWithLocation() throws Exception {
         User newUser = getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
@@ -170,25 +170,27 @@ class AdminRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @Transactional(propagation = Propagation.NEVER)
     void createWithDuplicateEmail() throws Exception {
-        User userWithDuplicateEmail = new User(USER_ID, "user", user.getEmail(), "pass", 2000, Role.USER);
+        User userWithDuplicateEmail = new User(null, "user", "user@yandex.ru", "pass", 2000, Role.USER);
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(admin))
                 .content(jsonWithPassword(userWithDuplicateEmail, "password")))
                 .andDo(print())
-                .andExpect(status().isUnprocessableEntity());
+                .andExpect(status().isConflict());
     }
 
     @Test
+    @Transactional(propagation = Propagation.NEVER)
     void updateWithDuplicateEmail() throws Exception {
-        User userWithDuplicateEmail = new User(admin);
-        userWithDuplicateEmail.setEmail("user@yandex.ru");
+        User userWithDuplicateEmail = new User(user);
+        userWithDuplicateEmail.setEmail("admin@gmail.com");
         perform(MockMvcRequestBuilders.put(REST_URL + USER_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(admin))
                 .content(jsonWithPassword(userWithDuplicateEmail, "password")))
                 .andDo(print())
-                .andExpect(status().isUnprocessableEntity());
+                .andExpect(status().isConflict());
     }
 }
