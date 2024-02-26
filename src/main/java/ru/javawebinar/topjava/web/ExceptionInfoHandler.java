@@ -22,7 +22,6 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static ru.javawebinar.topjava.util.exception.ErrorType.*;
 
@@ -48,9 +47,9 @@ public class ExceptionInfoHandler {
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)  // 422
     @ExceptionHandler(BindException.class)
     public static ErrorInfo getErrorResponse(HttpServletRequest request, BindException exception) {
-        String message = exception.getBindingResult().getFieldErrors().stream()
+        String[] message = new String[]{String.join("<br>", exception.getBindingResult().getFieldErrors().stream()
                 .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
-                .collect(Collectors.joining("<br>"));
+                .toArray(String[]::new))};
 
         return logAndGetErrorInfo(request, exception, false, VALIDATION_ERROR, message);
     }
