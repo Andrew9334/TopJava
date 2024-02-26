@@ -47,9 +47,9 @@ public class ExceptionInfoHandler {
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)  // 422
     @ExceptionHandler(BindException.class)
     public static ErrorInfo getErrorResponse(HttpServletRequest request, BindException exception) {
-        String[] message = new String[]{String.join("<br>", exception.getBindingResult().getFieldErrors().stream()
+        String[] message = exception.getBindingResult().getFieldErrors().stream()
                 .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
-                .toArray(String[]::new))};
+                .toArray(String[]::new);
 
         return logAndGetErrorInfo(request, exception, false, VALIDATION_ERROR, message);
     }
