@@ -3,8 +3,12 @@ package ru.javawebinar.topjava.web.user;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.javawebinar.topjava.AuthorizedUser;
+import ru.javawebinar.topjava.View;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.to.UserTo;
 
@@ -18,14 +22,14 @@ public class ProfileRestController extends AbstractUserController {
     static final String REST_URL = "/rest/profile";
 
     @GetMapping
-    public User get() {
-        return super.get(authUserId());
+    public User get(@AuthenticationPrincipal @ApiIgnore AuthorizedUser authUser) {
+        return super.get(authUser.getId());
     }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete() {
-        super.delete(authUserId());
+    public void delete(@AuthenticationPrincipal @ApiIgnore AuthorizedUser authUser) {
+        super.delete(authUser.getId());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -39,8 +43,8 @@ public class ProfileRestController extends AbstractUserController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody UserTo userTo) {
-        super.update(userTo, authUserId());
+    public void update(@Validated(View.Web.class) @RequestBody UserTo userTo, @ApiIgnore @AuthenticationPrincipal AuthorizedUser authUser) {
+        super.update(userTo, authUser.getId());
     }
 
     @GetMapping("/text")
@@ -49,7 +53,7 @@ public class ProfileRestController extends AbstractUserController {
     }
 
     @GetMapping("/with-meals")
-    public User getWithMeals() {
-        return super.getWithMeals(authUserId());
+    public User getWithMeals( @ApiIgnore @AuthenticationPrincipal AuthorizedUser authUser) {
+        return super.getWithMeals(authUser.getId());
     }
 }
