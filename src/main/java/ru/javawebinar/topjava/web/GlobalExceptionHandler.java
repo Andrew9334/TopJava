@@ -19,7 +19,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
         log.error("Exception at request " + req.getRequestURL(), e);
-        Throwable rootCause = ValidationUtil.getRootCause(e);
+        return logAndGetExceptionView(req, e, true, ErrorType.APP_ERROR, null);
+    }
 
         HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         ModelAndView mav = new ModelAndView("exception",
