@@ -6,11 +6,10 @@ import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -44,11 +43,15 @@ public class ExceptionInfoHandler {
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public ErrorInfo notFoundError(HttpServletRequest req, NotFoundException e) {
+    public ResponseEntity<ErrorInfo> notFoundError(HttpServletRequest req, NotFoundException e) {
         return logAndGetErrorInfo(req, e, false, DATA_NOT_FOUND);
     }
 
-    @ResponseStatus(HttpStatus.CONFLICT)  // 409
+    @ExceptionHandler(ApplicationException.class)
+    public ResponseEntity<ErrorInfo> updateRestrictionError(HttpServletRequest req, ApplicationException appEx) {
+        return logAndGetErrorInfo(req, appEx, false, appEx.getType(), messageSourceAccessor.getMessage(appEx.getMsgCode()));
+    }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorInfo> conflict(HttpServletRequest req, DataIntegrityViolationException e) {
         String rootMsg = ValidationUtil.getRootCause(e).getMessage();
@@ -73,13 +76,12 @@ public class ExceptionInfoHandler {
     }
 
     @ExceptionHandler({IllegalRequestDataException.class, MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class})
-    public ErrorInfo validationError(HttpServletRequest req, Exception e) {
+    public ResponseEntity<ErrorInfo> validationError(HttpServletRequest req, Exception e) {
         return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR);
     }
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
-    public ErrorInfo internalError(HttpServletRequest req, Exception e) {
+    public ResponseEntity<ErrorInfo> internalError(HttpServletRequest req, Exception e) {
         return logAndGetErrorInfo(req, e, true, APP_ERROR);
     }
 
