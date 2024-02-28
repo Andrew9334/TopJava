@@ -11,6 +11,7 @@ import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.View;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.to.UserTo;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.net.URI;
 

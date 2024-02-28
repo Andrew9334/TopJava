@@ -14,8 +14,7 @@ import ru.javawebinar.topjava.View;
 import ru.javawebinar.topjava.to.UserTo;
 import springfox.documentation.annotations.ApiIgnore;
 
-import javax.validation.Valid;
-
+@ApiIgnore
 @Controller
 @RequestMapping("/profile")
 public class ProfileUIController extends AbstractUserController {
