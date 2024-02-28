@@ -38,7 +38,9 @@ public class GlobalExceptionHandler {
         return logAndGetExceptionView(req, e, true, ErrorType.APP_ERROR, null);
     }
 
-        HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+    private ModelAndView logAndGetExceptionView(HttpServletRequest req, Exception e, boolean logException, ErrorType errorType, String code) {
+        Throwable rootCause = ValidationUtil.logAndGetRootCause(log, req, e, logException, errorType);
+
         ModelAndView mav = new ModelAndView("exception",
                 Map.of("exception", rootCause, "message", rootCause.toString(), "status", httpStatus));
         mav.setStatus(httpStatus);
