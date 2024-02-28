@@ -4,11 +4,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.javawebinar.topjava.View;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.to.UserTo;
 import springfox.documentation.annotations.ApiIgnore;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
